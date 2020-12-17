@@ -1,0 +1,39 @@
+---
+title: "Grit Lab F2020_analyzing"
+author: "Chayce Baldwin"
+date: "12/11/2020"
+output: html_document
+---
+
+```{r}
+pollev <- read.csv("Grit Lab PollEv Report.csv")
+
+pollev %<>% select(
+  
+  date = `Received.at..CST.`,
+  firstname = First.name,
+  lastname = Last.name,
+  email = Email,
+  Custom.report.ID,
+  response = Response,
+  Activity.title,
+  Activity.type,
+  Group.survey.name,
+  act_name
+)
+
+pollev_wide <- pollev %>% pivot_wider(.,
+                       id_cols = c("firstname", "lastname"),
+                       names_from = "act_name",
+                       values_from = "response")
+
+pollev_wide2 <- pollev %>% distinct() %>% pivot_wider(.,
+                       id_cols = c("firstname", "lastname"),
+                       names_from = "act_name",
+                       values_from = "response")
+
+pollev_wide2 %>% write_rds("pollev_wide.rds")
+```
+
+
+

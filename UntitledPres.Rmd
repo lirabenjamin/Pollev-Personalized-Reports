@@ -1,0 +1,415 @@
+---
+title: "Personalized Grit Lab Report"
+output: 
+  revealjs::revealjs_presentation:
+    center: true
+    transition: fade
+    incremental: true
+---
+<style>
+.reveal section img { background:none; border:none; box-shadow:none; }
+</style>
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(Ben)
+library(grid)
+d <- readRDS("~/Documents/GitHub/Pollev-Personalized-Reports/Pollev-Personalized-Reports/pollev_wide.rds")
+i = 74
+
+library(stringr)
+numbers = function(string){as.numeric(str_extract_all(string, "[0-9]+")[[1]])}
+coord = function(string){
+  string = numbers(string)
+  x = string[1]+string[2]/100
+  y = string[3]+string[4]/100
+  d = tibble(x,y) %>% gather(axis,value)
+  return(d)
+}
+
+
+```
+
+Hi `r d$firstname[i]`,
+
+Welcome to your personalized GritLab report. We will go week to week, reviewing evertything you have told us through PollEv. 
+
+He hope this will be helpful to you to reflect now that GritLab is done.
+
+___
+
+Here's how you started. On week one, after learning the basics of grit:
+
+- You rated your **passion** as `r d$pass_t1[i]`
+
+- ...and your **perseverance** as `r d$pers_t1[i]`. 
+
+___
+
+Here's a graph:
+
+```{r, echo = F}
+d %>% 
+  slice(i) %>% 
+  select(Passion = pass_t1,Perseverance = pers_t1) %>% 
+  gather(Facet,value) %>%
+  rowwise() %>% 
+  mutate(Score = numbers(value)[1],
+         Time = "Pre-Class") %>% 
+  ggplot(aes(x = Facet,y = Score,fill = Facet))+
+  geom_col(position = "dodge",alpha= .5)+
+  coord_cartesian(ylim = c(1,5)) +
+  theme_ang()+
+  theme(legend.position = "none")+
+  theme(text = element_text(size = 25))
+```
+
+___
+
+Then, you learned about goal setting, planning and deliberate practice. 
+
+You established a wish, its assocaited outcome, identified potential personal obstacles and planned accordingly, using implementation intentions. 
+
+___
+
+Did it go according to plan? 
+
+```{r, echo = F, fig.asp=521/1968}
+d %>% 
+  slice(i) %>% 
+  select(woop_success) %>% 
+  coord() %>% spread(axis,value) %>% 
+  ggplot(aes(y,x))+
+  coord_cartesian(xlim = c(0,100), ylim = c(0,100))+
+  annotation_custom(rasterGrob(png::readPNG("wplan.png"),
+                               width = unit(1,"npc"),
+                               height = unit(1,"npc")),
+                               0, 100, 0, 100) +
+  geom_point(size = 10,shape = 23,fill = "white")+  
+  theme_void()
+```
+
+____
+
+And here is how much you learned
+
+```{r, echo = F, fig.asp = 1/(1972/507)}
+d %>% 
+  slice(i) %>% 
+  select(woop_learn) %>% 
+  coord() %>% spread(axis,value) %>% 
+  ggplot(aes(y,x))+
+  annotation_custom(rasterGrob(png::readPNG("wlearn.png"),
+                               width = unit(1,"npc"),
+                               height = unit(1,"npc")),
+                               0, 100, 0, 100) +
+  geom_point(size = 10,shape = 23,fill = "white")+  
+  theme_void()+
+  coord_cartesian(xlim = c(0,100), ylim = c(0,100))
+```
+
+___
+
+On week four, we discussed **feedback.** 
+
+You told us that you felt <span style="color:blue">`r d$criticalfeedback_feel[i]`"</span>  when recieving negative feedback, 
+
+...and <span style="color:blue">"`r d$posfeedback_feel[i]`" </span>  when recieveing positive feedback.
+
+___
+
+We then turned into **stress and failure.** 
+
+On week 5, you reported feeling  <span style="color:blue">"  `r d$lifestress[i] %>% tolower`" </span> of stress in your life right now, the primary source of it being <span style="color:blue">`r d$lifestress_source[i] %>% tolower`</span>. 
+
+___
+
+We discussed the impact of different stress mindsets. 
+
+You said that it is  <span style="color:blue">`r d$stress_neg[i] %>% tolower`</span> that the effects of stress are negative and should be avoided, 
+
+...and that it is  <span style="color:blue">`r d$stress_growth[i] %>% tolower`</span> that stress facilitates learning and growth. 
+
+___
+
+Research has found that people who that stress can facilitate learning and growth experience enhanced performance, well-being and health. 
+
+___
+
+We also talked about **adversity and failure. **
+
+They differ because one has personal responsibility over failure, not adversity. 
+
+Perhaps that is why you said that failure had made you feel <span style="color:blue">`r d$fail_feel[i]`.</span> 
+
+___
+
+On week six, we talked about **mentors**, and you remembered someone who fit into the category: <span style="color:blue"> `r d$mentor[i] %>% tolower`.</span>  
+
+Here's how you described him or her.
+
+___
+
+```{r, echo = F, fig.asp=1/1.6464088398}
+d$mentor_style[i] %>% coord() %>% 
+  rename(Dimension = axis,
+         Value = value) %>% 
+  mutate(Dimension = case_when(Dimension == "y" ~ "Demanding",
+                               Dimension == "x" ~ "Supportive")) %>% 
+  spread(Dimension,Value) %>% 
+  ggplot(aes(Demanding,Supportive))+
+  coord_cartesian(ylim = c(0,100),xlim = c(0,100))+
+  theme_void()+
+  annotation_custom(rasterGrob(png::readPNG("Mentor.png"),
+                               width = unit(1,"npc"),
+                               height = unit(1,"npc")),
+                               0, 100, 0, 100) +
+  geom_point(size = 5,shape = 23,fill = "white")
+
+```
+
+___
+
+You also wrote a gratitude letter to  <span style="color:blue"> `r d$gratletter[i] %>% tolower`.</span>
+
+___
+
+On week eight, we talked about **interest.**
+
+You saw this picture.
+
+```{r, echo = F,fig.height=1}
+include_graphics("Art1.png")
+```
+
+___
+
+You rated it as `r d$painting1_enjoy[i]`/10 in enjoyment, 
+
+`r d$painting1_interest[i]`/10 in interestingness, 
+
+and `r d$painting1_novel[i]`/10 in novelty. 
+
+What about Francis Bacon's *Head Surrounded by Sides of Beef*?
+
+___
+
+```{r, echo = F,fig.height=1}
+include_graphics("Art2.png")
+```
+
+____
+
+You rated it as `r d$painting2_enjoy[i]`/10 in enjoyment, 
+
+`r d$painting2_interest[i]`/10 in interestingness, 
+
+and `r d$painting2_novel[i]`/10 in novelty. 
+
+Prior research has shown that for most people, what is interesting is not necesarily related to what is enjoyable.
+
+___
+
+We talked about states of extreme interest, or as Mihaly Csikszentmihalyi would call it, flow. 
+
+You said you had experienced flow when <span style="color:blue"> `r d$flow[i]`.</span>
+
+___
+
+We then transitioned into **values**. 
+
+There, you said you preferred to <span style="color:blue">`r d$wyr_knowvwealth[i]`</span>, <span style="color:blue">`r d$wyr_approval[i]`</span> and <span style="color:blue">`r d$wyr_routine[i]`</span>. 
+
+These responses, in a sense, spoke about what you valued. 
+
+You wrote a *This I Believe* essay, and located it here in Schwartz's value circle:
+
+___
+
+```{r, echo=F,fig.asp=0.7443019943}
+d$TIB_value[i] %>% 
+  coord() %>%
+  spread(axis,value) %>% 
+  ggplot(aes(x,y))+
+  coord_cartesian(xlim = c(0,100),ylim= c(0,100))+
+  annotation_custom(rasterGrob(png::readPNG("Values.png"),
+                               width = unit(1,"npc"),
+                               height = unit(1,"npc")),
+                               0, 100, 0, 100) +
+   geom_point(size = 5,shape = 23,fill = "white")+
+  theme_void()
+
+
+```
+
+
+___
+
+For **strengths,** Danny gave us an interesting lecture on the nature of talent. 
+
+You defined it as <span style="color:blue">`r d$talent_def[i]`</span>. 
+
+You ranked your talents as <span style="color:blue">`r d$talent_rank[i]`</span>. 
+
+You said you're personality strenght was <span style="color:blue">`r d$sig_strength[i]`</span>.
+
+___
+
+We then examined **demand and social impact.** Here's how you said you cared about salary vs. social impact for your first career move:
+
+```{r,fig.asp=0.2764505119, echo=F}
+d$salaryvimpact[i] %>% 
+  coord() %>% 
+  spread(axis,value) %>% 
+  ggplot(aes(y,x))+
+  coord_cartesian(xlim = c(0,100),ylim= c(0,100))+
+  annotation_custom(rasterGrob(png::readPNG("Social impact.png"),
+                               width = unit(1,"npc"),
+                               height = unit(1,"npc")),
+                               0, 100, 0, 100) +
+   geom_point(size = 5,shape = 23,fill = "white")+
+  theme_void()
+  
+```
+
+
+___
+
+We also asked why you worked hard. 
+
+You said you <span style="color:blue">`r d$workhard_prosoc[i] %>% tolower`</span> to working hard for wanting to help others, 
+
+...and you <span style="color:blue">`r d$workhard_enjoy[i] %>% tolower`</span> with working hard because you enjoy it. 
+
+___
+
+Regarding demand, you said the most serious issues affecting your country were 
+
+<span style="color:blue">`r d$topsocissue[i]`.</span> 
+
+Hopefully, you can find ways to use your work to impact in these.
+
+___
+
+We then talked about **goal hierarchies,** which requiere you to have a top level goal. About how clear is yours you said: <span style="color:blue">"`r d$toplevelgoal_clear[i]`". </span> 
+
+Over time and with self-reflection, this will get clearer and clearer. 
+
+One particular goal you have for the next six months is to <span style="color:blue">`r d$goal_6month[i]`. </span> 
+
+Here is how self concordant that goal is:
+
+___
+
+```{r, echo = F}
+d %>% 
+  slice(i) %>% 
+  select(Goal = goal_6month,
+    External =  "goal_external",
+              Introjected = "goal_introjected",      
+              Identified =     "goal_identified"    , 
+              Intrinsic ="goal_intrinsic") %>% 
+  gather(Reason,Level,factor_key = T,-Goal) %>% 
+  mutate(Level = case_when(Level == "Strongly disagree" ~ 1,
+                           Level == "Moderately disagree" ~ 2,
+                           Level == "Neither agree nor disagree" ~ 3,
+                           Level == "Moderately disagree" ~ 4,
+                           Level == "Strongly agree" ~ 5)) %>% 
+  ggplot(aes(Reason,Level, fill = c("red","red","blue","blue")))+
+  geom_col(alpha = .5)+
+  theme_ang()+
+  coord_cartesian(ylim =c(1,5))+
+  theme(legend.position = "none")+
+  theme(text = element_text(size = 25))
+  
+```
+
+___
+
+On the final lecture contentwise, we looked at paying it forward. 
+
+We learned about givers, takers and matchers, and also about prosocial purpose. 
+
+Here are your responses to items surveying this:
+
+___
+
+```{r, echo = F, fig.asp=.85}
+d %>% 
+  slice(i) %>% 
+  select(Taker = taker,Matcher = matcher,Giver = giver,
+         `Benefit Others` = selftrans1,
+         `Better World` = selftrans2,
+         `Lasting Meaning` = selftrans3) %>% 
+  gather(Item,Level,factor_key = T) %>% 
+  mutate(Level = case_when(Level == T ~ 1,
+                           Level == F ~ 0,
+                           Level == "Not like me at all" ~ 0,
+                           Level == "Not much like me" ~ .2,
+                           Level == "Somewhat like me" ~ .4,
+                           Level == "Mostly like me" ~ .8,
+                           Level == "Very much like me"~1),
+         Survey = c(rep("Reciprocity Style",3),rep("Self-Transcendence",3))) %>% 
+  ggplot(aes(Item,Level,fill=Survey))+
+  geom_col(alpha = .5)+
+  scale_y_continuous(labels = scales::label_percent())+
+  theme_ang()+
+  facet_grid(Survey~.,scales = "free")+
+  coord_flip(ylim = c(0,1))+
+  theme(legend.position = "none")+
+  theme(text = element_text(size = 25),
+        plot.caption = element_text(size = 14))+
+  labs(caption = "Reciprocity style answered as true/false.\nSelf-transcendence in a 5-point likert scale")
+```
+
+___
+
+After all this time, we hope you have emerged from gritlab a little grittier than you started. 
+
+Do you want to see you your grit rubric changed? 
+
+Drumroll please...
+
+___
+
+```{r, echo = F}
+d %>% 
+  slice(8) %>% 
+  select(Passion1 = pass_t1,Perseverance1 = pers_t1,
+         Passion2 = pass_t2,Perseverance2 = pers_t2) %>% 
+  gather(Facet,value) %>% 
+  rowwise() %>% 
+  mutate(Score = numbers(value)[1]) %>% 
+  ungroup() %>% 
+  mutate(Time = c("Pre-Class","Pre-Class","Post-Class","Post-Class"),
+         Time = ordered(Time,levels = c("Pre-Class","Post-Class"))) %>% 
+  mutate(Facet = rep(c("Passion","Perseverance"),2)) %>% 
+  ggplot(aes(x = Time,y = Score,fill = Facet,col = Facet))+
+  geom_col(position = "dodge",alpha= .5,col=NA)+
+  geom_point(size=5)+
+  geom_line(aes(group = Facet))+
+  facet_wrap(~Facet,scales = "free")+
+  coord_cartesian(ylim = c(1,7)) +
+  scale_y_continuous(breaks = 1:7)+
+  theme_ang()+
+  theme(text = element_text(size = 25))
+```
+
+___
+Don't worry if the rubric doesn't yet reflect growth. It is of course a course measure that cannot replace your own self-reflection. 
+
+In any case, grit is not built in a day,
+
+...so stay passionate and perseverant on the life long quest of choosing easy, working hard, and paying it forward.
+
+___
+
+With grit and gratitude,
+
+```{r, echo = F}
+include_graphics("Sig.png")
+```
+
+Angela and the GritLab team.
+
