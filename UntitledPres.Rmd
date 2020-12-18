@@ -71,7 +71,7 @@ ___
 
 Then, you learned about goal setting, planning, and deliberate practice. 
 
-<p class="fragment">You established a wish,</p> <p class="fragment">imagined its associated outcome,</p> <p class="fragment">identified potential personal obstacles, </p><p class="fragment">and then planned accordingly, using implementation intentions.</p>
+<p> <span class="fragment>You established a wish,</span> <span class="fragment">imagined its associated outcome,</span> <span class="fragment">identified potential personal obstacles, </span><span class="fragment">and then planned accordingly, using implementation intentions.</span></p>
 
 ___
 
@@ -145,7 +145,7 @@ You said that you believe it is  <span style="color:blue">`r d$stress_neg[i] %>%
 
 ___
 
-Interestingly, research has found that people who believe that stress can facilitate learning and growth experience enhanced <span class="fragment bold">performance, well-being and health.</span> 
+Interestingly, research has found that people who believe that stress can facilitate learning and growth experience enhanced <span class="fragment highlight-green">performance, well-being and health.</span> 
 
 ___
 
