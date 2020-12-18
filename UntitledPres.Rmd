@@ -15,7 +15,7 @@ library(tidyverse)
 library(knitr)
 library(Ben)
 library(grid)
-d <- readRDS("~/Documents/GitHub/Pollev-Personalized-Reports/Pollev-Personalized-Reports/pollev_wide.rds")
+d <- readRDS("~/Documents/GitHub/Pollev-Personalized-Reports/pollev_wide.rds")
 i = 74
 
 library(stringr)
@@ -33,9 +33,11 @@ coord = function(string){
 
 Hi `r d$firstname[i]`,
 
-Welcome to your personalized GritLab report. We will go week to week, reviewing evertything you have told us through PollEv. 
+<p class="fragment">Welcome to your personalized Grit Lab report! </p>
 
-He hope this will be helpful to you to reflect now that GritLab is done.
+<p class="fragment">We will go week by week, reviewing everything you have told us through Poll Everywhere.</p>
+
+<p class="fragment">We hope this will help you reflect on what you learned and experienced during Grit Lab.</p>
 
 ___
 
@@ -67,9 +69,9 @@ d %>%
 
 ___
 
-Then, you learned about goal setting, planning and deliberate practice. 
+Then, you learned about goal setting, planning, and deliberate practice. 
 
-You established a wish, its assocaited outcome, identified potential personal obstacles and planned accordingly, using implementation intentions. 
+<p class="fragment">You established a wish,</p> <p class="fragment">imagined its associated outcome,</p> <p class="fragment">identified potential personal obstacles, </p><p class="fragment">and then planned accordingly, using implementation intentions.</p>
 
 ___
 
@@ -111,43 +113,48 @@ d %>%
 
 ___
 
-On week four, we discussed **feedback.** 
+In week four, we discussed **feedback.** 
 
-You told us that you felt <span style="color:blue">`r d$criticalfeedback_feel[i]`"</span>  when recieving negative feedback, 
+<p class="fragment">You told us that you felt <span style="color:blue">"`r d$criticalfeedback_feel[i]`"</span>  when receiving negative feedback,</p>
 
-...and <span style="color:blue">"`r d$posfeedback_feel[i]`" </span>  when recieveing positive feedback.
-
-___
-
-We then turned into **stress and failure.** 
-
-On week 5, you reported feeling  <span style="color:blue">"  `r d$lifestress[i] %>% tolower`" </span> of stress in your life right now, the primary source of it being <span style="color:blue">`r d$lifestress_source[i] %>% tolower`</span>. 
+<p class="fragment">...and <span style="color:blue">"`r d$posfeedback_feel[i]`" </span>  when recieveing positive feedback.</p>
 
 ___
 
-We discussed the impact of different stress mindsets. 
+We then turned to learning about **stress.** 
 
-You said that it is  <span style="color:blue">`r d$stress_neg[i] %>% tolower`</span> that the effects of stress are negative and should be avoided, 
-
-...and that it is  <span style="color:blue">`r d$stress_growth[i] %>% tolower`</span> that stress facilitates learning and growth. 
-
-___
-
-Research has found that people who that stress can facilitate learning and growth experience enhanced performance, well-being and health. 
+<p class="fragment">In week 5, you reported feeling  <span style="color:blue">"`r d$lifestress[i] %>% tolower`" </span> of stress in your life right now, the primary source of it being <span style="color:blue">`r d$lifestress_source[i] %>% tolower`</span>. </p>
 
 ___
 
 We also talked about **adversity and failure. **
 
-They differ because one has personal responsibility over failure, not adversity. 
+<p class="fragment">Although related, adversity and failure are different: </p>
 
-Perhaps that is why you said that failure had made you feel <span style="color:blue">`r d$fail_feel[i]`.</span> 
+<p class="fragment">Adversity happens to us, whereas failure is something for which we are generally more responsible. </p>
+
+<p class="fragment">Perhaps that is why you said that failure had made you feel <span style="color:blue">`r d$fail_feel[i]`.</span> </p>
+
+<p class="fragment">However, how we interpret stress and failure matters...</p>
 
 ___
 
-On week six, we talked about **mentors**, and you remembered someone who fit into the category: <span style="color:blue"> `r d$mentor[i] %>% tolower`.</span>  
+You said that you believe it is  <span style="color:blue">`r d$stress_neg[i] %>% tolower`</span> that the effects of stress are negative and should be avoided, 
 
-Here's how you described him or her.
+<p class="fragment">...and that it is  <span style="color:blue">`r d$stress_growth[i] %>% tolower`</span> that stress facilitates learning and growth. </p>
+
+___
+
+Interestingly, research has found that people who believe that stress can facilitate learning and growth experience enhanced <span class="fragment bold">performance, well-being and health.</span> 
+
+___
+
+
+On week six, we talked about mentors
+
+<p class="fragment">...you said for you, your most important mentor was <span style="color:blue"> `r d$mentor[i] %>% tolower %>% ifelse(. == "other","someone other than a teacher, coach, etc.",.)`.</span>  </p>
+
+<p class="fragment">Here's how you described him or her:</p>
 
 ___
 
@@ -171,7 +178,7 @@ d$mentor_style[i] %>% coord() %>%
 
 ___
 
-You also wrote a gratitude letter to  <span style="color:blue"> `r d$gratletter[i] %>% tolower`.</span>
+You also wrote a gratitude letter to  <span style="color:blue"> `r d$gratletter[i] %>% tolower`.</span> Do you remember what you said and how it made you feel?
 
 ___
 
@@ -185,13 +192,15 @@ include_graphics("Art1.png")
 
 ___
 
-You rated it as `r d$painting1_enjoy[i]`/10 in enjoyment, 
+You rated it as 
 
-`r d$painting1_interest[i]`/10 in interestingness, 
+`r d$painting1_enjoy[i]`/10 in enjoyment, 
 
-and `r d$painting1_novel[i]`/10 in novelty. 
+`r d$painting1_interest[i]`/10 in interestingness, and
 
-What about Francis Bacon's *Head Surrounded by Sides of Beef*?
+`r d$painting1_novel[i]`/10 in novelty. 
+
+<p class="fragment">What about Francis Bacon's *Head Surrounded by Sides of Beef*?</p>
 
 ___
 
@@ -201,29 +210,33 @@ include_graphics("Art2.png")
 
 ____
 
-You rated it as `r d$painting2_enjoy[i]`/10 in enjoyment, 
+You rated it as 
 
-`r d$painting2_interest[i]`/10 in interestingness, 
+`r d$painting2_enjoy[i]`/10 in enjoyment, 
 
-and `r d$painting2_novel[i]`/10 in novelty. 
+`r d$painting2_interest[i]`/10 in interestingness, and
 
-Prior research has shown that for most people, what is interesting is not necesarily related to what is enjoyable.
+`r d$painting2_novel[i]`/10 in novelty. 
+
+<p class="fragment">Prior research has shown that for most people, what is interesting is not necessarily related to what is enjoyable.</p>
 
 ___
 
 We talked about states of extreme interest, or as Mihaly Csikszentmihalyi would call it, flow. 
 
-You said you had experienced flow when <span style="color:blue"> `r d$flow[i]`.</span>
+<p class="fragment">You said you had experienced flow when <span style="color:blue"> `r d$flow[i]`.</span></p>
+
+<p class="fragment">How do you feel when you are <span style="color:blue">`r d$flow[i]`</span> and get into the flow state?</p>
 
 ___
 
 We then transitioned into **values**. 
 
-There, you said you preferred to <span style="color:blue">`r d$wyr_knowvwealth[i]`</span>, <span style="color:blue">`r d$wyr_approval[i]`</span> and <span style="color:blue">`r d$wyr_routine[i]`</span>. 
+<p class="fragment">There, you said you preferred to <span style="color:blue">`r d$wyr_knowvwealth[i]`</span>, <span style="color:blue">`r d$wyr_approval[i]`</span> and <span style="color:blue">`r d$wyr_routine[i]`</span>. </p>
 
-These responses, in a sense, spoke about what you valued. 
+<p class="fragment">These responses, in a sense, spoke about what you valued. </p>
 
-You wrote a *This I Believe* essay, and located it here in Schwartz's value circle:
+<p class="fragment">You wrote a *This I Believe* essay, and located it here in Schwartz's value circle:</p>
 
 ___
 
@@ -248,11 +261,11 @@ ___
 
 For **strengths,** Danny gave us an interesting lecture on the nature of talent. 
 
-You defined it as <span style="color:blue">`r d$talent_def[i]`</span>. 
+<p class="fragment">You defined talent as <span style="color:blue">`r d$talent_def[i]`</span>. </p>
 
-You ranked your talents as <span style="color:blue">`r d$talent_rank[i]`</span>. 
+<p class="fragment">You ranked your talents as <span style="color:blue">`r d$talent_rank[i]`</span>. </p>
 
-You said you're personality strenght was <span style="color:blue">`r d$sig_strength[i]`</span>.
+<p class="fragment">You said your personality strength was <span style="color:blue">`r d$sig_strength[i]`</span>.</p>
 
 ___
 
@@ -278,28 +291,27 @@ ___
 
 We also asked why you worked hard. 
 
-You said you <span style="color:blue">`r d$workhard_prosoc[i] %>% tolower`</span> to working hard for wanting to help others, 
+<p class="fragment">You said you <span style="color:blue">`r d$workhard_prosoc[i] %>% tolower`</span> to working hard for wanting to help others, </p>
 
-...and you <span style="color:blue">`r d$workhard_enjoy[i] %>% tolower`</span> with working hard because you enjoy it. 
+<p class="fragment">...and you <span style="color:blue">`r d$workhard_enjoy[i] %>% tolower`</span> with working hard because you enjoy it. </p>
 
 ___
 
 Regarding demand, you said the most serious issues affecting your country were 
 
-<span style="color:blue">`r d$topsocissue[i]`.</span> 
+<p class="fragment"><span style="color:blue">`r d$topsocissue[i]`.</span> </p>
 
-Hopefully, you can find ways to use your work to impact in these.
+<p class="fragment">Would you like to work towards these?</p>
 
 ___
 
-We then talked about **goal hierarchies,** which requiere you to have a top level goal. About how clear is yours you said: <span style="color:blue">"`r d$toplevelgoal_clear[i]`". </span> 
+We then talked about **goal hierarchies,** which require you to have a top-level goal. How clear is your top-level goal? You said: <span style="color:blue">"`r d$toplevelgoal_clear[i]`". </span> 
 
-Over time and with self-reflection, this will get clearer and clearer. 
+<p class="fragment">Over time and with self-reflection, this will get clearer and clearer. </p>
 
-One particular goal you have for the next six months is to <span style="color:blue">`r d$goal_6month[i]`. </span> 
+<p class="fragment">One particular goal you have for the next six months is to <span style="color:blue">`r d$goal_6month[i]`. </span> </p>
 
-Here is how self concordant that goal is:
-
+<p class="fragment">You rated that goal in terms of how much it really represents you. Here’s what you said:</p>
 ___
 
 ```{r, echo = F}
@@ -327,11 +339,11 @@ d %>%
 
 ___
 
-On the final lecture contentwise, we looked at paying it forward. 
+Finally, on the penultimate lecture we looked at paying it forward. 
 
-We learned about givers, takers and matchers, and also about prosocial purpose. 
+<p class="fragment">We learned about givers, takers, and matchers, and also about prosocial purpose. </p>
 
-Here are your responses to items surveying this:
+<p class="fragment">Here are your responses to items surveying this:</p>
 
 ___
 
@@ -365,11 +377,11 @@ d %>%
 
 ___
 
-After all this time, we hope you have emerged from gritlab a little grittier than you started. 
+After all this time, we hope you have emerged from Grit Lab a little grittier than you started. 
 
-Do you want to see you your grit rubric changed? 
+<p class="fragment">Do you want to see how your grit rubric changed? </p>
 
-Drumroll please...
+<p class="fragment">Drumroll please...</p>
 
 ___
 
@@ -397,11 +409,11 @@ d %>%
 ```
 
 ___
-Don't worry if the rubric doesn't yet reflect growth. It is of course a course measure that cannot replace your own self-reflection. 
+Don't worry if the rubric doesn't yet reflect growth. It is only a coarse measure that cannot replace your own self-reflection. 
 
-In any case, grit is not built in a day,
+<p class="fragment">In any case, grit is not built in a day...</p>
 
-...so stay passionate and perseverant on the life long quest of choosing easy, working hard, and paying it forward.
+<p class="fragment">...so stay passionate and persevering on the lifelong quest of choosing easy, working hard, and paying it forward.</p>
 
 ___
 
@@ -411,5 +423,5 @@ With grit and gratitude,
 include_graphics("Sig.png")
 ```
 
-Angela and the GritLab team.
+Angela and the Grit Lab team.
 
