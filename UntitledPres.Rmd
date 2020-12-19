@@ -15,8 +15,8 @@ library(tidyverse)
 library(knitr)
 library(Ben)
 library(grid)
-d <- readRDS("~/Documents/GitHub/Pollev-Personalized-Reports/pollev_wide.rds")
-i = 74
+d <- readRDS("~/Documents/GitHub/Pollev-Personalized-Reports/pollev_wide_i.rds")
+i = 1
 
 library(stringr)
 numbers = function(string){as.numeric(str_extract_all(string, "[0-9]+")[[1]])}
@@ -184,44 +184,6 @@ ___
 
 On week eight, we talked about **interest.**
 
-You saw this picture.
-
-```{r, echo = F,fig.height=1}
-include_graphics("Art1.png")
-```
-
-___
-
-You rated it as 
-
-`r d$painting1_enjoy[i]`/10 in enjoyment, 
-
-`r d$painting1_interest[i]`/10 in interestingness, and
-
-`r d$painting1_novel[i]`/10 in novelty. 
-
-<p class="fragment">What about Francis Bacon's *Head Surrounded by Sides of Beef*?</p>
-
-___
-
-```{r, echo = F,fig.height=1}
-include_graphics("Art2.png")
-```
-
-____
-
-You rated it as 
-
-`r d$painting2_enjoy[i]`/10 in enjoyment, 
-
-`r d$painting2_interest[i]`/10 in interestingness, and
-
-`r d$painting2_novel[i]`/10 in novelty. 
-
-<p class="fragment">Prior research has shown that for most people, what is interesting is not necessarily related to what is enjoyable.</p>
-
-___
-
 We talked about states of extreme interest, or as Mihaly Csikszentmihalyi would call it, flow. 
 
 <p class="fragment">You said you had experienced flow when <span style="color:blue"> `r d$flow[i]`.</span></p>
@@ -315,14 +277,17 @@ We then talked about **goal hierarchies,** which require you to have a top-level
 ___
 
 ```{r, echo = F}
-d %>% 
+sc = d %>% 
   slice(i) %>% 
   select(Goal = goal_6month,
     External =  "goal_external",
               Introjected = "goal_introjected",      
               Identified =     "goal_identified"    , 
-              Intrinsic ="goal_intrinsic") %>% 
-  gather(Reason,Level,factor_key = T,-Goal) %>% 
+              Intrinsic ="goal_intrinsic") 
+
+if(sc[2:5] %>% is.na %>% rowSums()!= 4){
+  sc %>% 
+    gather(Reason,Level,factor_key = T,-Goal) %>% 
   mutate(Level = case_when(Level == "Strongly disagree" ~ 1,
                            Level == "Moderately disagree" ~ 2,
                            Level == "Neither agree nor disagree" ~ 3,
@@ -334,26 +299,31 @@ d %>%
   coord_cartesian(ylim =c(1,5))+
   theme(legend.position = "none")+
   theme(text = element_text(size = 25))
-  
+}
+
+
 ```
 
 ___
 
 Finally, on the penultimate lecture we looked at paying it forward. 
 
-<p class="fragment">We learned about givers, takers, and matchers, and also about prosocial purpose. </p>
+<p class="fragment">We learned about reciprocity style: givers, takers, and matchers. You also responded to items about prosocial purpose. </p>
 
 <p class="fragment">Here are your responses to items surveying this:</p>
 
 ___
 
 ```{r, echo = F, fig.asp=.85}
-d %>% 
+rs = d %>% 
   slice(i) %>% 
   select(Taker = taker,Matcher = matcher,Giver = giver,
-         `Benefit Others` = selftrans1,
-         `Better World` = selftrans2,
-         `Lasting Meaning` = selftrans3) %>% 
+         selftrans1,
+         selftrans2,
+         selftrans3)
+
+if(rs[1:6] %>% is.na %>% rowSums()!= 6){
+  rs %>% 
   gather(Item,Level,factor_key = T) %>% 
   mutate(Level = case_when(Level == T ~ 1,
                            Level == F ~ 0,
@@ -361,18 +331,22 @@ d %>%
                            Level == "Not much like me" ~ .2,
                            Level == "Somewhat like me" ~ .4,
                            Level == "Mostly like me" ~ .8,
-                           Level == "Very much like me"~1),
-         Survey = c(rep("Reciprocity Style",3),rep("Self-Transcendence",3))) %>% 
-  ggplot(aes(Item,Level,fill=Survey))+
+                           Level == "Very much like me"~1)) %>% 
+    spread(Item,Level) %>% 
+    mutate(`Self-transcendence` = mean(c(selftrans1,selftrans2,selftrans3),na.rm=T)) %>% 
+    select(-selftrans1,-selftrans2,-selftrans3) %>% 
+    gather(Item,Level,factor_key = T) %>% 
+  ggplot(aes(Item,Level))+
   geom_col(alpha = .5)+
   scale_y_continuous(labels = scales::label_percent())+
   theme_ang()+
-  facet_grid(Survey~.,scales = "free")+
-  coord_flip(ylim = c(0,1))+
+    coord_cartesian(ylim = c(0,1))+
   theme(legend.position = "none")+
   theme(text = element_text(size = 25),
         plot.caption = element_text(size = 14))+
   labs(caption = "Reciprocity style answered as true/false.\nSelf-transcendence in a 5-point likert scale")
+}
+
 ```
 
 ___
@@ -386,8 +360,8 @@ After all this time, we hope you have emerged from Grit Lab a little grittier th
 ___
 
 ```{r, echo = F}
-d %>% 
-  slice(8) %>% 
+pp = d %>% 
+  slice(i) %>% 
   select(Passion1 = pass_t1,Perseverance1 = pers_t1,
          Passion2 = pass_t2,Perseverance2 = pers_t2) %>% 
   gather(Facet,value) %>% 
@@ -396,7 +370,9 @@ d %>%
   ungroup() %>% 
   mutate(Time = c("Pre-Class","Pre-Class","Post-Class","Post-Class"),
          Time = ordered(Time,levels = c("Pre-Class","Post-Class"))) %>% 
-  mutate(Facet = rep(c("Passion","Perseverance"),2)) %>% 
+  mutate(Facet = rep(c("Passion","Perseverance"),2)) 
+if(pp$Score %>% is.na() %>% sum != 4){
+  pp %>% 
   ggplot(aes(x = Time,y = Score,fill = Facet,col = Facet))+
   geom_col(position = "dodge",alpha= .5,col=NA)+
   geom_point(size=5)+
@@ -406,6 +382,7 @@ d %>%
   scale_y_continuous(breaks = 1:7)+
   theme_ang()+
   theme(text = element_text(size = 25))
+}
 ```
 
 ___
