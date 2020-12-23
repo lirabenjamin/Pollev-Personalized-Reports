@@ -12,5 +12,8 @@ i = 1
 for (j in 1:nrow(fulldata)){
   data = slice(fulldata,j)
   write_rds(data,file = "~/Documents/GitHub/Pollev-Personalized-Reports/pollev_wide_i.rds")
-  rmarkdown::render('UntitledPres.Rmd',output_file = paste0(j,". Grit Lab Report ",data$firstname))
+  path = paste0("Moodmeter/",j,".pdf")
+  rmarkdown::render('UntitledPres.Rmd',output_file = paste0("Markdowns/",j,". Grit Lab Report ",data$firstname))
 }
+
+

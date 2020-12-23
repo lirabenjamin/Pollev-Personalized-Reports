@@ -106,7 +106,11 @@ d %>%
                                width = unit(1,"npc"),
                                height = unit(1,"npc")),
                                0, 100, 0, 100) +
-  geom_point(size = 10,shape = 23,fill = "white")+  
+  annotation_custom(rasterGrob(png::readPNG("Loc.png"),
+                               width = unit(1,"npc"),
+                               height = unit(1,"npc")),
+                               69.52-5, 69.52+5, 64.66+5, 64.66-5)+
+  #geom_point(size = 10,shape = "\u261F",fill = "white")+  
   theme_void()+
   coord_cartesian(xlim = c(0,100), ylim = c(0,100))
 ```
@@ -348,6 +352,16 @@ if(rs[1:6] %>% is.na %>% rowSums()!= 6){
 }
 
 ```
+
+___
+<p class = "fragment">Remember your mood meter?</p>
+
+<p class = "fragment">Here's how your mood evolved through the semester</p>
+
+```{r}
+include_graphics(path)
+```
+
 
 ___
 
