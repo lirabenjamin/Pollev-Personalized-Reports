@@ -11,6 +11,8 @@ output:
 </style>
 
 ```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+
 library(tidyverse)
 library(knitr)
 library(Ben)
@@ -41,7 +43,11 @@ Hi `r d$firstname[i]`,
 
 ___
 
-Here's how you started. On week one, after learning the basics of grit:
+<p class="fragment">Do you rememeber the grit rubric, from the first time we met?</p>
+<p class="fragment">
+<img class="r-stretch" src="Rubric.png">
+</p>
+___
 
 - You rated your **passion** as `r d$pass_t1[i]`
 
@@ -61,7 +67,7 @@ d %>%
          Time = "Pre-Class") %>% 
   ggplot(aes(x = Facet,y = Score,fill = Facet))+
   geom_col(position = "dodge",alpha= .5)+
-  coord_cartesian(ylim = c(1,5)) +
+  coord_cartesian(ylim = c(1,6)) +
   theme_ang()+
   theme(legend.position = "none")+
   theme(text = element_text(size = 25))
@@ -78,17 +84,24 @@ ___
 Did it go according to plan? 
 
 ```{r, echo = F, fig.asp=521/1968}
+library(png)
+library(grid)
+library(egg)
+library(gganimate)
+
 d %>% 
-  slice(i) %>% 
+  slice(1) %>% 
   select(woop_success) %>% 
-  coord() %>% spread(axis,value) %>% 
+  coord() %>%
+  spread(axis,value) %>% 
+  mutate(g = list(rasterGrob(readPNG("Loc.png"), width=unit(24,"pt")))) %>% 
   ggplot(aes(y,x))+
   coord_cartesian(xlim = c(0,100), ylim = c(0,100))+
   annotation_custom(rasterGrob(png::readPNG("wplan.png"),
                                width = unit(1,"npc"),
                                height = unit(1,"npc")),
                                0, 100, 0, 100) +
-  geom_point(size = 10,shape = 23,fill = "white")+  
+  geom_custom(aes(data = g), grob_fun=identity) +  
   theme_void()
 ```
 
@@ -100,17 +113,15 @@ And here is how much you learned
 d %>% 
   slice(i) %>% 
   select(woop_learn) %>% 
-  coord() %>% spread(axis,value) %>% 
+  coord() %>% 
+  spread(axis,value) %>% 
+  mutate(g = list(rasterGrob(readPNG("Loc.png"), width=unit(24,"pt")))) %>% 
   ggplot(aes(y,x))+
   annotation_custom(rasterGrob(png::readPNG("wlearn.png"),
                                width = unit(1,"npc"),
                                height = unit(1,"npc")),
                                0, 100, 0, 100) +
-  annotation_custom(rasterGrob(png::readPNG("Loc.png"),
-                               width = unit(1,"npc"),
-                               height = unit(1,"npc")),
-                               69.52-5, 69.52+5, 64.66+5, 64.66-5)+
-  #geom_point(size = 10,shape = "\u261F",fill = "white")+  
+  geom_custom(aes(data = g), grob_fun=identity) +  
   theme_void()+
   coord_cartesian(xlim = c(0,100), ylim = c(0,100))
 ```
@@ -119,15 +130,15 @@ ___
 
 In week four, we discussed **feedback.** 
 
-<p class="fragment">You told us that you felt <span style="color:blue">"`r d$criticalfeedback_feel[i]`"</span>  when receiving negative feedback,</p>
+<p class="fragment">You told us that you felt <span style="color:blue">`r d$criticalfeedback_feel[i] %>% tolower()`</span>  when receiving negative feedback,</p>
 
-<p class="fragment">...and <span style="color:blue">"`r d$posfeedback_feel[i]`" </span>  when recieveing positive feedback.</p>
+<p class="fragment">...and <span style="color:blue">`r d$posfeedback_feel[i] %>% tolower`</span>  when recieveing positive feedback.</p>
 
 ___
 
 We then turned to learning about **stress.** 
 
-<p class="fragment">In week 5, you reported feeling  <span style="color:blue">"`r d$lifestress[i] %>% tolower`" </span> of stress in your life right now, the primary source of it being <span style="color:blue">`r d$lifestress_source[i] %>% tolower`</span>. </p>
+<p class="fragment">In week 5, you reported feeling  <span style="color:blue">`r d$lifestress[i] %>% tolower` </span> of stress in your life right now, the primary source of it being <span style="color:blue">`r d$lifestress_source[i] %>% tolower`</span>. </p>
 
 ___
 
@@ -137,7 +148,7 @@ We also talked about **adversity and failure. **
 
 <p class="fragment">Adversity happens to us, whereas failure is something for which we are generally more responsible. </p>
 
-<p class="fragment">Perhaps that is why you said that failure had made you feel <span style="color:blue">`r d$fail_feel[i]`.</span> </p>
+<p class="fragment">Perhaps that is why you said that failure had made you feel <span style="color:blue">`r d$fail_feel[i] %>% tolower`.</span> </p>
 
 <p class="fragment">However, how we interpret stress and failure matters...</p>
 
@@ -149,7 +160,7 @@ You said that you believe it is  <span style="color:blue">`r d$stress_neg[i] %>%
 
 ___
 
-Interestingly, research has found that people who believe that stress can facilitate learning and growth experience enhanced <span class="fragment highlight-green">performance, well-being and health.</span> 
+Interestingly, research has found that people who believe that stress can facilitate learning and growth experience enhanced <span class="fragment"><strong>performance, well-being and health.</strong></span> 
 
 ___
 
@@ -169,6 +180,7 @@ d$mentor_style[i] %>% coord() %>%
   mutate(Dimension = case_when(Dimension == "y" ~ "Demanding",
                                Dimension == "x" ~ "Supportive")) %>% 
   spread(Dimension,Value) %>% 
+  mutate(g = list(rasterGrob(readPNG("Loc.png"), width=unit(24,"pt")))) %>% 
   ggplot(aes(Demanding,Supportive))+
   coord_cartesian(ylim = c(0,100),xlim = c(0,100))+
   theme_void()+
@@ -176,7 +188,7 @@ d$mentor_style[i] %>% coord() %>%
                                width = unit(1,"npc"),
                                height = unit(1,"npc")),
                                0, 100, 0, 100) +
-  geom_point(size = 5,shape = 23,fill = "white")
+  geom_custom(aes(data = g), grob_fun=identity)
 
 ```
 
@@ -190,9 +202,9 @@ On week eight, we talked about **interest.**
 
 We talked about states of extreme interest, or as Mihaly Csikszentmihalyi would call it, flow. 
 
-<p class="fragment">You said you had experienced flow when <span style="color:blue"> `r d$flow[i]`.</span></p>
+<p class="fragment">You said you had experienced flow when <span style="color:blue"> `r d$flow[i] %>% tolower`.</span></p>
 
-<p class="fragment">How do you feel when you are <span style="color:blue">`r d$flow[i]`</span> and get into the flow state?</p>
+<p class="fragment">How do you feel when you are <span style="color:blue">`r d$flow[i] %>% tolower`</span> and get into the flow state?</p>
 
 ___
 
@@ -210,13 +222,14 @@ ___
 d$TIB_value[i] %>% 
   coord() %>%
   spread(axis,value) %>% 
+    mutate(g = list(rasterGrob(readPNG("Loc.png"), width=unit(24,"pt")))) %>% 
   ggplot(aes(x,y))+
   coord_cartesian(xlim = c(0,100),ylim= c(0,100))+
   annotation_custom(rasterGrob(png::readPNG("Values.png"),
                                width = unit(1,"npc"),
                                height = unit(1,"npc")),
                                0, 100, 0, 100) +
-   geom_point(size = 5,shape = 23,fill = "white")+
+  geom_custom(aes(data = g), grob_fun=identity) +  
   theme_void()
 
 
@@ -229,7 +242,12 @@ For **strengths,** Danny gave us an interesting lecture on the nature of talent.
 
 <p class="fragment">You defined talent as <span style="color:blue">`r d$talent_def[i]`</span>. </p>
 
-<p class="fragment">You ranked your talents as <span style="color:blue">`r d$talent_rank[i]`</span>. </p>
+```{r, include = FALSE}
+tal = d$talent_rank[1] %>% str_split(",") %>% unlist() %>% trimws()
+```
+
+
+<p class="fragment">You ranked your top three talents as: <span style="color:blue"><span class="fragment">`r tal[1]`, </span><span class="fragment">`r tal[2]`, </span><span class="fragment">and `r tal[3]`</span></span>. </p>
 
 <p class="fragment">You said your personality strength was <span style="color:blue">`r d$sig_strength[i]`</span>.</p>
 
@@ -241,13 +259,15 @@ We then examined **demand and social impact.** Here's how you said you cared abo
 d$salaryvimpact[i] %>% 
   coord() %>% 
   spread(axis,value) %>% 
+    mutate(g = list(rasterGrob(readPNG("Loc.png"), width=unit(24,"pt")))) %>% 
+
   ggplot(aes(y,x))+
   coord_cartesian(xlim = c(0,100),ylim= c(0,100))+
   annotation_custom(rasterGrob(png::readPNG("Social impact.png"),
                                width = unit(1,"npc"),
                                height = unit(1,"npc")),
                                0, 100, 0, 100) +
-   geom_point(size = 5,shape = 23,fill = "white")+
+  geom_custom(aes(data = g), grob_fun=identity) +  
   theme_void()
   
 ```
@@ -263,22 +283,34 @@ We also asked why you worked hard.
 
 ___
 
-Regarding demand, you said the most serious issues affecting your country were 
+Regarding demand, you said the most serious issues affecting your country were:
 
-<p class="fragment"><span style="color:blue">`r d$topsocissue[i]`.</span> </p>
+```{r include = F}
+soc = d$topsocissue[1] %>% str_replace_all(.,"income, discrimination","income/discrimination") %>% str_split(",") %>% unlist() %>% trimws()
+soc[1:3]
+```
+
+
+<p class="fragment"><span style="color:blue">`r soc[1]`.</span> </p>
+
+<p class="fragment"><span style="color:blue">`r soc[2]`.</span> </p>
+
+<p class="fragment"><span style="color:blue">`r soc[3]`.</span> </p>
 
 <p class="fragment">Would you like to work towards these?</p>
 
 ___
 
-We then talked about **goal hierarchies,** which require you to have a top-level goal. How clear is your top-level goal? You said: <span style="color:blue">"`r d$toplevelgoal_clear[i]`". </span> 
+We then talked about **goal hierarchies,** which require you to have a top-level goal. How clear is your top-level goal? You said: <span style="color:blue">`r d$toplevelgoal_clear[i]`. </span> 
 
 <p class="fragment">Over time and with self-reflection, this will get clearer and clearer. </p>
 
-<p class="fragment">One particular goal you have for the next six months is to <span style="color:blue">`r d$goal_6month[i]`. </span> </p>
+<p class="fragment">One particular goal you have for the next six months is to <span style="color:blue">`r d$goal_6month[i] %>% tolower`. </span> </p>
 
 <p class="fragment">You rated that goal in terms of how much it really represents you. Here’s what you said:</p>
 ___
+
+Red bars represent self-concordant motivation, while blue bars represent non-concordant motivation.
 
 ```{r, echo = F}
 sc = d %>% 
@@ -337,7 +369,7 @@ if(rs[1:6] %>% is.na %>% rowSums()!= 6){
                            Level == "Mostly like me" ~ .8,
                            Level == "Very much like me"~1)) %>% 
     spread(Item,Level) %>% 
-    mutate(`Self-transcendence` = mean(c(selftrans1,selftrans2,selftrans3),na.rm=T)) %>% 
+    mutate(`Self-\ntranscendence` = mean(c(selftrans1,selftrans2,selftrans3),na.rm=T)) %>% 
     select(-selftrans1,-selftrans2,-selftrans3) %>% 
     gather(Item,Level,factor_key = T) %>% 
   ggplot(aes(Item,Level))+
@@ -357,12 +389,14 @@ ___
 <p class = "fragment">Remember your mood meter?</p>
 
 <p class = "fragment">Here's how your mood evolved through the semester</p>
+<p class = "fragment">
+```{r, echo = F,out.width="100%"}
+if(!is.na(d$No[1])){
+  include_graphics(path)
+}
 
-```{r}
-include_graphics(path)
 ```
-
-
+</p>
 ___
 
 After all this time, we hope you have emerged from Grit Lab a little grittier than you started. 
@@ -392,8 +426,8 @@ if(pp$Score %>% is.na() %>% sum != 4){
   geom_point(size=5)+
   geom_line(aes(group = Facet))+
   facet_wrap(~Facet,scales = "free")+
-  coord_cartesian(ylim = c(1,7)) +
-  scale_y_continuous(breaks = 1:7)+
+  coord_cartesian(ylim = c(1,6)) +
+  scale_y_continuous(breaks = 1:6)+
   theme_ang()+
   theme(text = element_text(size = 25))
 }
