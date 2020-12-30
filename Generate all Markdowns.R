@@ -9,7 +9,7 @@ fulldata <- readRDS("~/Documents/GitHub/Pollev-Personalized-Reports/pollev_wide.
 fulldata = read_csv("Data with Moodmeter.csv")
 fulldata = fulldata %>% mutate(png = paste0(No,".png"))
 i = 1
-
+j=3
 #Loop through people
 for (j in 1:nrow(fulldata)){
   data = slice(fulldata,j)
@@ -18,3 +18,4 @@ for (j in 1:nrow(fulldata)){
   rmarkdown::render('Presentation.Rmd',
                     output_file = paste0("docs/",j,". Grit Lab Report ",data$firstname))
 }
+

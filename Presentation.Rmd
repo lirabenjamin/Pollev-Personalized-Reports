@@ -18,7 +18,14 @@ library(knitr)
 library(Ben)
 library(grid)
 d <- readRDS("~/Documents/GitHub/Pollev-Personalized-Reports/pollev_wide_i.rds")
-i = 1
+wyr = read_csv("Data with Moodmeter.csv")
+wyr = wyr %>% select(starts_with("wyr"))
+wyr = data.frame(
+  i1= wyr[1] %>% unique %>% na.exclude,
+i2 = wyr[2] %>% unique %>% na.exclude,
+i3 = wyr[3] %>% unique %>% na.exclude
+)
+
 
 library(stringr)
 numbers = function(string){as.numeric(str_extract_all(string, "[0-9]+")[[1]])}
@@ -160,7 +167,7 @@ You said that you believe it is  <span style="color:blue">`r d$stress_neg[i] %>%
 
 ___
 
-Interestingly, research has found that people who believe that stress can facilitate learning and growth experience enhanced <span class="fragment"><strong>performance, well-being and health.</strong></span> 
+Interestingly, research has found that people who believe that<strong> stress can facilitate learning and growth</strong> experience enhanced <span class="fragment"><strong>performance, well-being and health.</strong></span> 
 
 ___
 
@@ -210,7 +217,11 @@ ___
 
 We then transitioned into **values**. 
 
-<p class="fragment">There, you said you preferred to <span style="color:blue">`r d$wyr_knowvwealth[i]`</span>, <span style="color:blue">`r d$wyr_approval[i]`</span> and <span style="color:blue">`r d$wyr_routine[i]`</span>. </p>
+<p class="fragment">There, you said you preferred to:</p> 
+
+<p class="fragment"><span style="color:blue">`r d$wyr_knowvwealth[i]`</span>, rather than `r ifelse(d$wyr_knowvwealth[i] == wyr$wyr_knowvwealth[1],wyr$wyr_knowvwealth[2],wyr$wyr_knowvwealth[1])` </p>
+<p class="fragment"><span style="color:blue">`r d$wyr_approval[i]`</span>, rather than `r ifelse(d$wyr_approval[i] == wyr$wyr_approval[1],wyr$wyr_approval[2],wyr$wyr_approval[1])`; and </p>
+<p class="fragment"><span style="color:blue">`r d$wyr_routine[i]`</span>, rather than `r ifelse(d$wyr_routine[i] == wyr$wyr_routine[1],wyr$wyr_routine[2],wyr$wyr_routine[1])`.</p>
 
 <p class="fragment">These responses, in a sense, spoke about what you valued. </p>
 
