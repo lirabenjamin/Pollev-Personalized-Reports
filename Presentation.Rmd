@@ -50,7 +50,16 @@ Hi `r d$firstname[i]`,
 
 ___
 
-<p class="fragment">Do you rememeber the grit rubric, from the first time we met?</p>
+Important note!
+
+<p class="fragment">Sometimes, some students weren't able to respond to all polls.</p>
+
+<p class="fragment">If the data for one of the polls is missing, the automatic report will display "NA".</p>
+
+<p class="fragment">Okay, let's get started!</p>
+___
+
+p class="fragment">Do you remember the grit rubric, from the first time we met?</p>
 <p class="fragment">
 <img class="r-stretch" src="Rubric.png">
 </p>
@@ -139,7 +148,7 @@ In week four, we discussed **feedback.**
 
 <p class="fragment">You told us that you felt <span style="color:blue">`r d$criticalfeedback_feel[i] %>% tolower()`</span>  when receiving negative feedback,</p>
 
-<p class="fragment">...and <span style="color:blue">`r d$posfeedback_feel[i] %>% tolower`</span>  when recieveing positive feedback.</p>
+<p class="fragment">...and <span style="color:blue">`r d$posfeedback_feel[i] %>% tolower`</span>  when receiving positive feedback.</p>
 
 ___
 
@@ -258,7 +267,7 @@ tal = d$talent_rank[1] %>% str_split(",") %>% unlist() %>% trimws()
 ```
 
 
-<p class="fragment">You ranked your top three talents as: <span style="color:blue"><span class="fragment">`r tal[1]`, </span><span class="fragment">`r tal[2]`, </span><span class="fragment">and `r tal[3]`</span></span>. </p>
+<p class="fragment">You ranked your top three talents as: <span style="color:blue"><span class="fragment">`r tal[1]`, </span><span class="fragment">`r tal[2]`, </span><span class="fragment">and `r tal[3]`.</span></span> </p>
 
 <p class="fragment">You said your personality strength was <span style="color:blue">`r d$sig_strength[i]`</span>.</p>
 
