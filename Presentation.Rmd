@@ -59,7 +59,7 @@ Important note!
 <p class="fragment">Okay, let's get started!</p>
 ___
 
-p class="fragment">Do you remember the grit rubric, from the first time we met?</p>
+<p class="fragment">Do you remember the grit rubric, from the first time we met?</p>
 <p class="fragment">
 <img class="r-stretch" src="Rubric.png">
 </p>
@@ -154,7 +154,7 @@ ___
 
 We then turned to learning about **stress.** 
 
-<p class="fragment">In week 5, you reported feeling  <span style="color:blue">`r d$lifestress[i] %>% tolower` </span> of stress in your life right now, the primary source of it being <span style="color:blue">`r d$lifestress_source[i] %>% tolower`</span>. </p>
+<p class="fragment">In week five, you reported feeling  <span style="color:blue">`r d$lifestress[i] %>% tolower` </span> of stress in your life right now, the primary source of it being <span style="color:blue">`r d$lifestress_source[i] %>% tolower`</span>. </p>
 
 ___
 
@@ -181,11 +181,11 @@ Interestingly, research has found that people who believe that<strong> stress ca
 ___
 
 
-On week six, we talked about mentors
+In week six, we talked about mentors
 
 <p class="fragment">...you said for you, your most important mentor was <span style="color:blue"> `r d$mentor[i] %>% tolower %>% ifelse(. == "other","someone other than a teacher, coach, etc.",.)`.</span>  </p>
 
-<p class="fragment">Here's how you described him or her:</p>
+<p class="fragment">Here's how you described them:</p>
 
 ___
 
@@ -214,7 +214,7 @@ You also wrote a gratitude letter to  <span style="color:blue"> `r d$gratletter[
 
 ___
 
-On week eight, we talked about **interest.**
+In week eight, we discussed **interests.**
 
 We talked about states of extreme interest, or as Mihaly Csikszentmihalyi would call it, flow. 
 
@@ -330,7 +330,7 @@ We then talked about **goal hierarchies,** which require you to have a top-level
 <p class="fragment">You rated that goal in terms of how much it really represents you. Here’s what you said:</p>
 ___
 
-Red bars represent self-concordant motivation, while blue bars represent non-concordant motivation.
+Red bars represent self-concordant motivation, while blue bars represent non-self-concordant motivation.
 
 ```{r, echo = F}
 sc = d %>% 
@@ -362,7 +362,7 @@ if(sc[2:5] %>% is.na %>% rowSums()!= 4){
 
 ___
 
-Finally, on the penultimate lecture we looked at paying it forward. 
+Finally, in the penultimate lecture we looked at paying it forward. 
 
 <p class="fragment">We learned about reciprocity style: givers, takers, and matchers. You also responded to items about prosocial purpose. </p>
 
@@ -458,7 +458,7 @@ Don't worry if the rubric doesn't yet reflect growth. It is only a coarse measur
 
 <p class="fragment">In any case, grit is not built in a day...</p>
 
-<p class="fragment">...so stay passionate and persevering on the lifelong quest of choosing easy, working hard, and paying it forward.</p>
+<p class="fragment">...so stay passionate and persevering in the lifelong quest of choosing easy, working hard, and paying it forward.</p>
 
 ___
 
