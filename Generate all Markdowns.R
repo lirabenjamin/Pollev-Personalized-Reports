@@ -18,4 +18,3 @@ for (j in 1:nrow(fulldata)){
   rmarkdown::render('Presentation.Rmd',
                     output_file = paste0("docs/",j,". Grit Lab Report ",data$firstname))
 }
-
