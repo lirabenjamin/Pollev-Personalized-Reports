@@ -32,11 +32,10 @@ numbers = function(string){as.numeric(str_extract_all(string, "[0-9]+")[[1]])}
 coord = function(string){
   string = numbers(string)
   x = string[1]+string[2]/100
-  y = string[3]+string[4]/100
+  y = 100-(string[3]+string[4]/100)
   d = tibble(x,y) %>% gather(axis,value)
   return(d)
 }
-
 
 ```
 
@@ -111,7 +110,7 @@ d %>%
   coord() %>%
   spread(axis,value) %>% 
   mutate(g = list(rasterGrob(readPNG("Loc.png"), width=unit(24,"pt")))) %>% 
-  ggplot(aes(y,x))+
+  ggplot(aes(x,y))+
   coord_cartesian(xlim = c(0,100), ylim = c(0,100))+
   annotation_custom(rasterGrob(png::readPNG("wplan.png"),
                                width = unit(1,"npc"),
@@ -132,7 +131,7 @@ d %>%
   coord() %>% 
   spread(axis,value) %>% 
   mutate(g = list(rasterGrob(readPNG("Loc.png"), width=unit(24,"pt")))) %>% 
-  ggplot(aes(y,x))+
+  ggplot(aes(x,y))+
   annotation_custom(rasterGrob(png::readPNG("wlearn.png"),
                                width = unit(1,"npc"),
                                height = unit(1,"npc")),
@@ -193,8 +192,8 @@ ___
 d$mentor_style[i] %>% coord() %>% 
   rename(Dimension = axis,
          Value = value) %>% 
-  mutate(Dimension = case_when(Dimension == "y" ~ "Demanding",
-                               Dimension == "x" ~ "Supportive")) %>% 
+  mutate(Dimension = case_when(Dimension == "x" ~ "Demanding",
+                               Dimension == "y" ~ "Supportive")) %>% 
   spread(Dimension,Value) %>% 
   mutate(g = list(rasterGrob(readPNG("Loc.png"), width=unit(24,"pt")))) %>% 
   ggplot(aes(Demanding,Supportive))+
@@ -281,7 +280,7 @@ d$salaryvimpact[i] %>%
   spread(axis,value) %>% 
     mutate(g = list(rasterGrob(readPNG("Loc.png"), width=unit(24,"pt")))) %>% 
 
-  ggplot(aes(y,x))+
+  ggplot(aes(x,y))+
   coord_cartesian(xlim = c(0,100),ylim= c(0,100))+
   annotation_custom(rasterGrob(png::readPNG("Social impact.png"),
                                width = unit(1,"npc"),

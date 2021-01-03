@@ -1,29 +1,35 @@
 mm = read_csv("~/Downloads/Mail Merge - Sheet1.csv")
 
 library(gmailr)
-gm_auth_configure(path = "CLab.json")
+gm_auth_configure(path = "~/Desktop/CLab.json")
 
 makemail = function(recipient,msg){
     mail = gm_mime() %>%
     gm_to(recipient) %>%
     gm_from("blira@characterlab.org") %>%
-    gm_subject("Your personalized Grit Lab Report") %>%
-    gm_text_body(msg)
+    gm_subject("Corrigendum: Your personalized Grit Lab Report") %>%
+    gm_html_body(msg)
     return(mail)
 }
   
-mm %>% 
+sent = mm %>% 
   filter(!is.na(`Email Address`)) %>% 
-  mutate(msg = glue::glue("Hi {First},
+  mutate(msg = glue::glue("<html>
+                          <p>Hi {First},</p>
 
-                          Below is a link to a personalized feedback report we built using all the data you gave us on Poll Everywhere, during class. To ensure privacy the file is password protected: your password is {Pass}.
-                          Here is the link:
+                          <p>On Thursday, we sent you a link to your personalized Grit Lab report. There was an issue with the data, and some of the location graphs were inaccurate. We have now fixed that.</p>
 
-                          {Url}
+                          <p><a href=\"{Url}\" target=\"_blank\">Click here</a> to see your report. Your password is {Pass}.</p>
 
-                          We hope this will help you reflect on the class!
 
-                          Best wishes for 2021,
-                          The Grit Lab Team")) %>% 
+                          <p>Sorry for the inconvenience,</p>
+
+                          <p>Best wishes for 2021,</p>
+                          <p>The Grit Lab Team</p>
+
+<p>Here is the url if the link doesn't work: {Url}</p>
+                          </html>")) %>% 
   mutate(mail = map2(`Email Address`,msg,makemail),
          sent = map(mail,gm_send_message))
+
+sent$sent
